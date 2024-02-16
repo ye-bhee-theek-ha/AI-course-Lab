@@ -161,6 +161,22 @@ def dfs(stack):
             stack.put(child)
 
 
+def UDF(stack):
+    total = 0
+    start = time.time()
+    while not stack.empty():
+        total += 1
+        node = stack.get()[1]
+        # print_node(node.grid)
+
+        if compare_node(node):
+            end = time.time()
+            duration = float(end - start)
+            return node, total, duration
+
+        for child in create_children(node):
+            stack.put((child.cost, child))
+
 def IDS(root):
     depth = 0
     total = 0
@@ -204,16 +220,14 @@ stack = LifoQueue()
 stack.put(root)
 node, total_layouts_evaluated, duration = dfs(stack)
 
+print(f"DFS")
 print(f"total moves to sol -> {node.cost}")
 print(f"total moves evaluated -> {total_layouts_evaluated}")
-k = 0
+print(f"total time taken -> {duration}")
+
 while node is not None:
     print_node(node.grid)
-    k += 1
-
     node = node.parent
-
-print(k)
 
 print("||||||||||||||||||||||||||||")
 
@@ -223,16 +237,14 @@ stack.put(root)
 
 node, total_layouts_evaluated, duration = dfs(stack)
 
+print(f"\nBFS")
 print(f"total moves to sol -> {node.cost}")
 print(f"total moves evaluated -> {total_layouts_evaluated}")
-k = 0
+print(f"total time taken -> {duration}")
+
 while node is not None:
     print_node(node.grid)
-    k += 1
-
     node = node.parent
-
-print(k)
 
 # Ids #
 stack = LifoQueue()
@@ -240,11 +252,28 @@ stack.put(root)
 
 node, total_layouts_evaluated, duration = IDS(root)
 
+print(f"IDS")
 print(f"total moves to sol -> {node.cost}")
 print(f"total moves evaluated -> {total_layouts_evaluated}")
+print(f"total time taken -> {duration}")
 
 while node is not None:
     print_node(node.grid)
     node = node.parent
 
-print(k)
+
+
+#  UDF #
+stack = PriorityQueue()
+stack.put((root.cost, root))
+
+node, total_layouts_evaluated, duration = UDF(stack)
+
+print(f"UDF")
+print(f"total moves to sol -> {node.cost}")
+print(f"total moves evaluated -> {total_layouts_evaluated}")
+print(f"total time taken -> {duration}")
+
+while node is not None:
+    print_node(node.grid)
+    node = node.parent
