@@ -162,12 +162,12 @@ def dfs(stack):
 
 
 def UDF(stack):
+    print("here")
     total = 0
     start = time.time()
     while not stack.empty():
         total += 1
-        node = stack.get()[1]
-        # print_node(node.grid)
+        node = stack.get()[2]
 
         if compare_node(node):
             end = time.time()
@@ -175,7 +175,7 @@ def UDF(stack):
             return node, total, duration
 
         for child in create_children(node):
-            stack.put((child.cost, child))
+             stack.put((child.cost, id(child), child))
 
 def IDS(root):
     depth = 0
@@ -265,7 +265,7 @@ while node is not None:
 
 #  UDF #
 stack = PriorityQueue()
-stack.put((root.cost, root))
+stack.put((root.cost, id(root), root))
 
 node, total_layouts_evaluated, duration = UDF(stack)
 
